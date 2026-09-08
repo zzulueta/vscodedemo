@@ -5,7 +5,7 @@ param webAppName string = 'GlobalAIManilaWebApp'
 param planName string = 'GlobalAIManilaPlan'
 param cosmosAccountName string = 'globalaimaniladb'
 param databaseName string = 'GlobalAIManilaDB'
-param githubRepository string = 'zzulueta/vscodedemo'
+param githubOidcSubject string = 'repo:zzulueta@41460714/vscodedemo@1361049554:ref:refs/heads/main'
 param operatorPrincipalId string = ''
 
 var tags = {
@@ -182,7 +182,7 @@ resource federation 'Microsoft.ManagedIdentity/userAssignedIdentities/federatedI
   name: 'github-main'
   properties: {
     issuer: 'https://token.actions.githubusercontent.com'
-    subject: 'repo:${githubRepository}:ref:refs/heads/main'
+    subject: githubOidcSubject
     audiences: ['api://AzureADTokenExchange']
   }
 }

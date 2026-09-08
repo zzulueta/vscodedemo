@@ -49,7 +49,7 @@ Website: https://globalaimanilawebapp.azurewebsites.net
 
 `GET /health` performs a Cosmos query and returns `{"status":"ok","storage":"cosmos"}` when the deployed database connection is healthy. It returns HTTP 503 when storage is unavailable.
 
-Cosmos keys are disabled. The app uses its system-assigned managed identity with Cosmos DB Built-in Data Contributor, scoped to this database. The deployment operator also receives database-scoped data access for administrator management. GitHub uses a separate identity with Website Contributor only on this web app. Its OIDC federation trusts only `repo:zzulueta/vscodedemo:ref:refs/heads/main`.
+Cosmos keys are disabled. The app uses its system-assigned managed identity with Cosmos DB Built-in Data Contributor, scoped to this database. The deployment operator also receives database-scoped data access for administrator management. GitHub uses a separate identity with Website Contributor only on this web app. Its OIDC federation trusts only `repo:zzulueta@41460714/vscodedemo@1361049554:ref:refs/heads/main`. This repository's GitHub subject includes immutable owner and repository IDs. The `githubOidcSubject` template parameter must match the subject issued by GitHub exactly when deploying from another repository.
 
 ### Cost And Availability
 
