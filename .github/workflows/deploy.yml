@@ -1,0 +1,65 @@
+name: Test and deploy Global AI Manila
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: global-ai-manila-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci --prefix app
+      - run: npm run check --prefix app
+      - run: npm test --prefix app
+      - run: npm audit --prefix app --omit=dev --audit-level=high
+      - name: Package application
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: |
+          npm prune --prefix app --omit=dev
+          zip -qr website.zip app/server.js app/lib app/views app/public app/scripts app/package.json app/package-lock.json app/node_modules GlobalAIManila.png
+      - uses: actions/upload-artifact@v4
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        with:
+          name: website
+          path: website.zip
+          retention-days: 3
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: website
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - uses: azure/webapps-deploy@v3
+        with:
+          app-name: GlobalAIManilaWebApp
+          package: website.zip
+      - name: Verify live database connectivity
+        env:
+          WEBSITE_URL: ${{ vars.AZURE_WEBSITE_URL }}
+        run: curl --fail --retry 12 --retry-delay 10 --retry-all-errors "${WEBSITE_URL}/health"

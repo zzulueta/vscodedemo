@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Global AI Manila connects people learning, building, and sharing artificial intelligence in Manila, Philippines.">
+  <title><%= title %><%= title === 'Global AI Manila' ? '' : ' | Global AI Manila' %></title>
+  <link rel="icon" href="/assets/logo.png" type="image/png">
+  <link rel="stylesheet" href="/assets/site.css">
+  <script defer src="/vendor/lucide.js"></script>
+  <script defer src="/assets/site.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container nav-row">
+    <a class="brand" href="/" aria-label="Global AI Manila home"><img src="/assets/logo.png" alt="" width="48" height="58"><span>Global AI <strong>Manila</strong></span></a>
+    <button class="icon-button menu-toggle" type="button" aria-label="Open navigation" aria-controls="navigation" aria-expanded="false"><i data-lucide="menu"></i></button>
+    <nav id="navigation" aria-label="Main navigation">
+      <a href="/" <%- path === '/' ? 'aria-current="page"' : '' %>>Home</a>
+      <a href="/about" <%- path === '/about' ? 'aria-current="page"' : '' %>>About Us</a>
+      <a href="/events" <%- path.startsWith('/events') ? 'aria-current="page"' : '' %>>Events</a>
+      <a href="/contact" <%- path === '/contact' ? 'aria-current="page"' : '' %>>Contact Us</a>
+      <% if (user) { %>
+        <% if (user.role === 'admin') { %><a href="/admin" <%- path === '/admin' ? 'aria-current="page"' : '' %>>Admin</a><% } %>
+        <a class="nav-account" href="/profile"><i data-lucide="user-round"></i> My profile</a>
+        <form action="/logout" method="post"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="icon-button" title="Sign out" aria-label="Sign out"><i data-lucide="log-out"></i></button></form>
+      <% } else { %>
+        <a class="nav-login" href="/login">Sign in</a><a class="button small" href="/signup">Join us <i data-lucide="arrow-up-right"></i></a>
+      <% } %>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<% if (notice) { %><div class="container"><div class="notice" role="status"><i data-lucide="circle-check"></i><%= notice %></div></div><% } %>

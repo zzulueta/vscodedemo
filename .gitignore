@@ -1,0 +1,11 @@
+node_modules/
+app/.data/
+.env
+.env.*
+!.env.example
+*.zip
+*.log
+test-results/
+playwright-report/
+infra/main.json
+.deployment/

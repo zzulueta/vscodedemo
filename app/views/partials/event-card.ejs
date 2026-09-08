@@ -1,0 +1,7 @@
+<article class="event-card">
+  <div class="event-card-top"><span class="tag"><%= event.format %></span><i data-lucide="calendar-days"></i></div>
+  <p class="event-date"><%= date(event.startsAt) %> PHT</p>
+  <h3><a href="/events/<%= event.id %>"><%= event.title %></a></h3>
+  <p class="clamp"><%= event.description %></p>
+  <div class="event-card-bottom"><span><i data-lucide="map-pin"></i><%= event.location %></span><a class="icon-button" href="/events/<%= event.id %>" aria-label="View <%= event.title %>" title="View event"><i data-lucide="arrow-up-right"></i></a></div>
+</article>

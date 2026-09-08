@@ -1,0 +1,10 @@
+<form action="/admin/events" method="post" class="form-grid">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <label class="full">Event title<input name="title" required minlength="3" maxlength="120" placeholder="A new reason to come together"></label>
+  <label>Date and time (Manila)<input type="datetime-local" name="localStartsAt" required></label>
+  <input type="hidden" name="startsAt" value="">
+  <label>Format<select name="format"><option>In person</option><option>Online</option><option>Hybrid</option></select></label>
+  <label class="full">Venue or meeting link<input name="location" required minlength="3" maxlength="200"></label>
+  <label class="full">Description<textarea name="description" rows="5" required minlength="10" maxlength="5000"></textarea></label>
+  <div class="full"><button class="button">Publish event <i data-lucide="arrow-up-right"></i></button></div>
+</form>
